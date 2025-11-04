@@ -1,7 +1,7 @@
 import express from 'express';
-import loginRouter from './login.js';
-import checkoutRouter from './checkout.js';
-import dashboardRouter from './dashboard.js';
+//import loginRouter from './login.js';
+//import checkoutRouter from './checkout.js';
+//import dashboardRouter from './dashboard.js';
 
 const router = express.Router();
 
