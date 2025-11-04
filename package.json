@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "playwright-test": "npx playwright test --config=tests/playwright.config.js && npx playwright show-report"
+    "playwright-test": "start-server-and-test 'node src/app.js' http://localhost:3000 'npx playwright test --config=tests/playwright.config.js && npx playwright show-report'"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.1"
+    "@playwright/test": "^1.56.1",
+    "start-server-and-test": "^2.1.2"
   }
 }
