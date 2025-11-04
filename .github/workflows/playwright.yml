@@ -31,7 +31,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Create test results directory
+        run: mkdir -p tests/test-results
+
       - name: Run Playwright tests
+        id: tests
         run: npm run playwright-test
         continue-on-error: true
 
