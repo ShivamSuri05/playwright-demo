@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+      
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
@@ -27,6 +33,7 @@ jobs:
 
       - name: Run Playwright tests
         run: npm run playwright-test
+        continue-on-error: true
 
       - name: Summarize Playwright results
         if: always()
@@ -39,6 +46,19 @@ jobs:
           echo "✅ Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
           echo "❌ Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
           echo "📊 Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Comment test summary on PR
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: playwright-summary
+          message: |
+            🎭 **Playwright Test Results**
+            ✅ Passed: ${{ env.PASSED }}
+            ❌ Failed: ${{ env.FAILED }}
+            📊 Total: ${{ env.TOTAL }}
+            🔗 [Download full HTML report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
 
       - name: Upload HTML Report
         if: always()
@@ -46,3 +66,7 @@ jobs:
         with:
           name: playwright-html-report
           path: tests/test-results/html-report/
+
+      - name: Fail job if tests failed
+        if: ${{ env.FAILED != '0' }}
+        run: exit 1
