@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "playwright-test": "start-server-and-test \"node src/app.js\" http://localhost:3000 \"npx playwright test --config=tests/playwright.config.js --reporter=json,html > tests/test-results/results.json; npx playwright show-report\""
+    "playwright-test": "start-server-and-test \"node src/app.js\" http://localhost:3000 \"mkdir -p tests/test-results && npx playwright test --config=tests/playwright.config.js --reporter=json,html > tests/test-results/results.json; npx playwright show-report\""
   },
   "keywords": [],
   "author": "",
