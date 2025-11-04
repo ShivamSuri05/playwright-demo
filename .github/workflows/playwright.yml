@@ -1,10 +1,8 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: ["*"]
   pull_request:
-    branches: ["*"]
+    types: [opened, synchronize, reopened]
 
 jobs:
   test:
@@ -29,6 +27,18 @@ jobs:
 
       - name: Run Playwright tests
         run: npm run playwright-test
+
+      - name: Summarize Playwright results
+        if: always()
+        run: |
+          echo "### 🎭 Playwright Test Summary" >> $GITHUB_STEP_SUMMARY
+          PASSED=$(jq '[.suites[].specs[] | select(.ok==true)] | length' tests/test-results/results.json)
+          FAILED=$(jq '[.suites[].specs[] | select(.ok==false)] | length' tests/test-results/results.json)
+          TOTAL=$(jq '[.suites[].specs[]] | length' tests/test-results/results.json)
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "❌ Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload HTML Report
         if: always()
