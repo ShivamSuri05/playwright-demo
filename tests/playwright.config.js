@@ -17,6 +17,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['junit', { outputFile: path.join(__dirname, 'test-results', 'results.xml') }],
+    ['json', { outputFile: path.join(__dirname, 'test-results', 'results.json') }],
     ['html', { outputFolder: path.join(__dirname, 'test-results', 'html-report') }],
   ],
 });
